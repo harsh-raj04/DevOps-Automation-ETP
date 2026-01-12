@@ -4,6 +4,7 @@ pipeline {
     environment {
         AWS_REGION = 'us-east-1'
         TF_VAR_key_name = 'devops'
+        SSH_KEY = credentials('ssh-private-key')
     }
     
     parameters {
@@ -97,10 +98,10 @@ pipeline {
                     echo 'Verifying web service via SSH...'
                     sh """
                         # Set proper permissions for SSH key
-                        chmod 600 ~/.ssh/devops.pem
+                        chmod 600 ${SSH_KEY}
                         
                         # SSH and run curl to check web service
-                        ssh -i ~/.ssh/devops.pem \\
+                        ssh -i ${SSH_KEY} \\
                             -o StrictHostKeyChecking=no \\
                             -o UserKnownHostsFile=/dev/null \\
                             ec2-user@${publicIp} \\
@@ -109,7 +110,7 @@ pipeline {
                     
                     def httpStatus = sh(
                         script: """
-                            ssh -i ~/.ssh/devops.pem \\
+                            ssh -i ${SSH_KEY} \\
                                 -o StrictHostKeyChecking=no \\
                                 -o UserKnownHostsFile=/dev/null \\
                                 ec2-user@${publicIp} \\
