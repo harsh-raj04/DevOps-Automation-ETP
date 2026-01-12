@@ -3,8 +3,7 @@ pipeline {
     
     environment {
         AWS_REGION = 'us-east-1'
-        TF_VAR_key_name = credentials('aws-ssh-key-name')
-        SSH_KEY = credentials('aws-ssh-private-key')
+        TF_VAR_key_name = 'devops'
     }
     
     parameters {
@@ -164,10 +163,6 @@ pipeline {
         }
         failure {
             echo 'Pipeline failed!'
-        }
-        always {
-            echo 'Cleaning up workspace...'
-            cleanWs()
         }
     }
 }
