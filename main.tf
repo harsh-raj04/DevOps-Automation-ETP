@@ -12,6 +12,22 @@ provider "aws" {
   region = var.aws_region
 }
 
+# Data source to get the latest Amazon Linux 2 AMI
+data "aws_ami" "amazon_linux_2" {
+  most_recent = true
+  owners      = ["amazon"]
+
+  filter {
+    name   = "name"
+    values = ["amzn2-ami-hvm-*-x86_64-gp2"]
+  }
+
+  filter {
+    name   = "virtualization-type"
+    values = ["hvm"]
+  }
+}
+
 # Security Group
 resource "aws_security_group" "web_server_sg" {
   name        = "web-server-sg"
@@ -47,7 +63,7 @@ resource "aws_security_group" "web_server_sg" {
 
 # EC2 Instance
 resource "aws_instance" "web_server" {
-  ami                    = var.ami_id
+  ami                    = data.aws_ami.amazon_linux_2.id
   instance_type          = var.instance_type
   key_name              = var.key_name
   vpc_security_group_ids = [aws_security_group.web_server_sg.id]

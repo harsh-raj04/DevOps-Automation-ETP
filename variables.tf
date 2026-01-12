@@ -10,12 +10,6 @@ variable "instance_type" {
   default     = "t2.micro"
 }
 
-variable "ami_id" {
-  description = "AMI ID for the EC2 instance (Amazon Linux 2)"
-  type        = string
-  default     = "ami-0c55b159cbfafe1f0"  # Amazon Linux 2 - update based on your region
-}
-
 variable "key_name" {
   description = "Name of the SSH key pair"
   type        = string
