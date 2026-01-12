@@ -1,10 +1,15 @@
 pipeline {
     agent any
     
+    options {
+        skipDefaultCheckout()
+    }
+    
     environment {
         AWS_REGION = 'us-east-1'
         TF_VAR_key_name = 'devops'
         SSH_KEY = credentials('ssh-private-key')
+        PATH = "/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:${env.PATH}"
     }
     
     parameters {
